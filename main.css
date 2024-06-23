@@ -13,6 +13,15 @@ body {
 
 #trainer {
   background-color: white;
+  padding: 1rem;
+}
+
+
+#controls {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: flex-start;
 }
 
 
@@ -28,10 +37,28 @@ body {
 }
 
 
-#controls {
+#loadout {
+  list-style: none;
+  width: 50rem;
+}
+
+#loadout li {
+  cursor: pointer;
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
+  gap: 0.5rem;
   justify-content: flex-start;
+}
+
+#loadout li input[type="checkbox"] {
+  align-self: flex-start;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+#loadout li .card {
+  flex-grow: 1;
 }
 
 

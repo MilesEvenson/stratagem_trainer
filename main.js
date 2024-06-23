@@ -31,7 +31,8 @@ const KEY_MAP = {
 if (!ALL_COMBOS) {
   console.error('Combo list failed to load');
 }
-let selectedCombos = (ALL_COMBOS).slice(0);
+//let selectedCombos = (ALL_COMBOS).slice(0);
+let selectedCombos = {};
 let currentCombo = null;
 let currentCodeIndex = -1;
 
@@ -42,7 +43,9 @@ let currentCodeIndex = -1;
 function reset() {
   document.getElementById('current').innerHTML = '';
   document.getElementById('log').innerHTML = '';
+  document.getElementById('loadout').innerHTML = '';
 
+  document.getElementById('config').style.setProperty('display', 'inline');
   document.getElementById('skip').style.setProperty('display', 'none');
   document.getElementById('start').style.setProperty('display', 'inline');
 
@@ -93,24 +96,25 @@ function buildComboCard(combo) {
 
 
 function cueCombo(combo) {
-  const prevBox = document.querySelector('#current > :first-child');
+  const prevCard = document.querySelector('#current > :first-child');
 
-  if (prevBox) {
-    prevBox.querySelector('.pips').remove();
+  if (prevCard) {
+    prevCard.querySelector('.pips').remove();
     const prevItem = document.createElement('li');
-    prevItem.append(prevBox);
+    prevItem.append(prevCard);
     document.getElementById('log').prepend(prevItem);
   }
 
-  const nextBox = buildComboCard(combo);
+  const nextCard = buildComboCard(combo);
   document.getElementById('current').innerHTML = '';
-  document.getElementById('current').append(nextBox);
+  document.getElementById('current').append(nextCard);
 }
 
 
 function nextCombo() {
-  const pick = Math.floor(Math.random() * selectedCombos.length);
-  currentCombo = selectedCombos[pick];
+  const pick = Math.floor(Math.random() * Object.keys(selectedCombos).length);
+  const slug = Object.keys(selectedCombos)[pick];
+  currentCombo = selectedCombos[slug];
   currentCodeIndex = 0;
   cueCombo(currentCombo);
 }
@@ -144,7 +148,7 @@ function handleComboKey(ev) {
   }
   const key = KEY_MAP[ev.key];
   // check direction against current combo
-  // show some feedback (log for now)
+  // and show some feedback.
   if (currentCombo.code[currentCodeIndex] === key) {
     document.querySelector('#current .pips').innerText = document.querySelector('#current .pips').innerText + '◾️';
     currentCodeIndex++;
@@ -162,6 +166,57 @@ function handleComboKey(ev) {
 }
 
 
+function toggleComboInLoadout(combo) {
+  if (combo.slug in selectedCombos) {
+    delete selectedCombos[combo.slug];
+    document.querySelector(`#${combo.slug} input[type="checkbox"]`).checked = false;
+  } else {
+    selectedCombos[combo.slug] = combo;
+    document.querySelector(`#${combo.slug} input[type="checkbox"]`).checked = true;
+  }
+}
+
+
+function drawLoadout() {
+  if (!ALL_COMBOS) {
+    console.error('Combo list failed to load');
+    return;
+  }
+
+  document.getElementById('current').innerText = '';
+  document.getElementById('log').innerText = '';
+  document.getElementById('loadout').innerText = '';
+
+  const loadoutList = document.getElementById('loadout');
+
+  for (const combo of ALL_COMBOS) {
+    const isSelected = combo.slug in selectedCombos;
+
+    const nextCard = buildComboCard(combo);
+    document.getElementById('current').innerHTML = '';
+    document.getElementById('current').append(nextCard);
+
+    const loadoutItem = document.createElement('li');
+    loadoutItem.id = combo.slug;
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    if (isSelected) {
+      checkbox.checked = true;
+    }
+    loadoutItem.append(checkbox);
+    loadoutItem.append(nextCard);
+
+    loadoutItem.addEventListener('click', (ev) => {
+      toggleComboInLoadout(combo);
+      ev.preventDefault();
+    });
+
+    loadoutList.append(loadoutItem);
+  }
+}
+
+
 function startListenCombo() {
   document.getElementById('trainer').classList.add('listening');
   document.addEventListener('keydown', handleComboKey, true);
@@ -174,10 +229,16 @@ function stopListenCombo() {
 
 function init() {
   document.getElementById('reset').addEventListener('click', reset);
+  document.getElementById('config').addEventListener('click', drawLoadout);
   document.getElementById('skip').addEventListener('click', nextCombo);
-  document.getElementById('start').addEventListener('click', (e) => {
+  document.getElementById('start').addEventListener('click', () => {
     document.getElementById('skip').style.setProperty('display', 'inline');
+    document.getElementById('config').style.setProperty('display', 'none');
     document.getElementById('start').style.setProperty('display', 'none');
+
+    document.getElementById('log').innerHTML = '';
+    document.getElementById('loadout').innerHTML = '';
+
     startListenCombo();
     nextCombo();
   });
