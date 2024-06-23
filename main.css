@@ -26,8 +26,23 @@ body {
 
 
 #current {
+  height: 6rem;
   margin: 1rem;
   width: 30rem;
+}
+
+#current .card {
+  background-color: white;
+  color: black;
+  transition-duration: 300ms;
+  transition-property: background-color;
+}
+
+#current .card.mistake {
+  /*background-color: #800080;*/
+  background-color: #705231;
+  transition-duration: 10ms;
+  transition-property: background-color;
 }
 
 
@@ -39,7 +54,7 @@ body {
 
 #loadout {
   list-style: none;
-  width: 50rem;
+  width: 20rem;
 }
 
 #loadout li {
@@ -51,6 +66,14 @@ body {
   justify-content: flex-start;
 }
 
+#loadout li .wrapper {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  padding: 0.5rem 0;
+}
+
 #loadout li input[type="checkbox"] {
   align-self: flex-start;
   height: 1.5rem;
@@ -59,6 +82,10 @@ body {
 
 #loadout li .card {
   flex-grow: 1;
+}
+
+#loadout li .card .pips {
+  display: none;
 }
 
 
@@ -74,6 +101,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  padding: 0.5rem;
 }
 
 
@@ -82,7 +110,7 @@ body {
   flex-direction: column;
   flex-basis: 80%;
   gap: 0.2rem;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
 }
 
 .card .stack .label,
@@ -92,23 +120,28 @@ body {
 }
 
 .card .icon {
-  /* TODO - consistent width! */
-  flex-basis: 3rem;
-  height: 3rem;
+  flex-basis: 2rem;
+  height: 2em;
 }
 
-.card .icon.eagle,
-.card .icon.orbital {
+.card .icon.eagle {
   background-color: red;
+}
+
+.card .icon.orbital {
+  background-color: #b700ff;
 }
 
 .card .icon.ship {
   background-color: yellow;
 }
 
-.card .icon.backpack,
-.card .icon.weapon {
+.card .icon.backpack {
   background-color: blue;
+}
+
+.card .icon.weapon {
+  background-color: lightskyblue;
 }
 
 .card .label {

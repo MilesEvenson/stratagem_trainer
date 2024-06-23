@@ -31,8 +31,10 @@ const KEY_MAP = {
 if (!ALL_COMBOS) {
   console.error('Combo list failed to load');
 }
-//let selectedCombos = (ALL_COMBOS).slice(0);
-let selectedCombos = {};
+let selectedCombos = {
+  'ship-reinforce': ALL_COMBOS.find(c => c.slug === 'ship-reinforce'),
+  'ship-resupply': ALL_COMBOS.find(c => c.slug === 'ship-resupply'),
+};
 let currentCombo = null;
 let currentCodeIndex = -1;
 
@@ -48,6 +50,10 @@ function reset() {
   document.getElementById('config').style.setProperty('display', 'inline');
   document.getElementById('skip').style.setProperty('display', 'none');
   document.getElementById('start').style.setProperty('display', 'inline');
+
+  document.getElementById('current').style.setProperty('display', 'none');
+  document.getElementById('log').style.setProperty('display', 'none');
+  document.getElementById('loadout').style.setProperty('display', 'none');
 
   currentCombo = null;
   currentCodeIndex = -1;
@@ -134,7 +140,7 @@ function handleComboKey(ev) {
     reset();
     ev.preventDefault();
     return;
-  } else if (ev.key === 'Space' || ev.key === 'Shift' || ev.key === 'Control') {
+  } else if (ev.key === ' ' || ev.key === 'Shift' || ev.key === 'Control') {
     console.log('User reset combo entry');
     currentCodeIndex = 0;
     document.querySelector('#current .pips').innerText = '';
@@ -158,6 +164,11 @@ function handleComboKey(ev) {
       nextCombo();
     }
   } else {
+    document.querySelector('#current .card').classList.add('mistake');
+    window.setTimeout(
+      () => document.querySelector('#current .card').classList.remove('mistake'),
+      250,
+    );
     console.log(`resetting after bad key: ${key}`);
     currentCodeIndex = 0;
     document.querySelector('#current .pips').innerText = '';
@@ -183,7 +194,10 @@ function drawLoadout() {
     return;
   }
 
-  document.getElementById('current').innerText = '';
+  document.getElementById('current').style.setProperty('display', 'none');
+  document.getElementById('log').style.setProperty('display', 'none');
+  document.getElementById('loadout').style.setProperty('display', 'block');
+
   document.getElementById('log').innerText = '';
   document.getElementById('loadout').innerText = '';
 
@@ -199,12 +213,16 @@ function drawLoadout() {
     const loadoutItem = document.createElement('li');
     loadoutItem.id = combo.slug;
 
+    const checkWrap = document.createElement('div');
+    checkWrap.classList.add('wrapper');
+
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     if (isSelected) {
       checkbox.checked = true;
     }
-    loadoutItem.append(checkbox);
+    checkWrap.append(checkbox);
+    loadoutItem.append(checkWrap);
     loadoutItem.append(nextCard);
 
     loadoutItem.addEventListener('click', (ev) => {
@@ -231,14 +249,22 @@ function init() {
   document.getElementById('reset').addEventListener('click', reset);
   document.getElementById('config').addEventListener('click', drawLoadout);
   document.getElementById('skip').addEventListener('click', nextCombo);
+
   document.getElementById('start').addEventListener('click', () => {
+    if (Object.keys(selectedCombos).length === 0) {
+      alert('Click Loadout and select some strategems');
+      return;
+    }
+
     document.getElementById('skip').style.setProperty('display', 'inline');
     document.getElementById('config').style.setProperty('display', 'none');
     document.getElementById('start').style.setProperty('display', 'none');
 
-    document.getElementById('log').innerHTML = '';
-    document.getElementById('loadout').innerHTML = '';
+    document.getElementById('current').style.setProperty('display', 'block');
+    document.getElementById('log').style.setProperty('display', 'block');
 
+    document.getElementById('log').innerHTML = '';
+    document.getElementById('loadout').style.setProperty('display', 'none');
     startListenCombo();
     nextCombo();
   });
