@@ -19,6 +19,11 @@ const KEY_MAP = {
   d: 'r',
   s: 'd',
   a: 'l',
+
+  ArrowUp: 'u',
+  ArrowRight: 'r',
+  ArrowDown: 'd',
+  ArrowLeft: 'l',
 };
 
 
@@ -47,13 +52,16 @@ function reset() {
 }
 
 
-function buildComboBox(combo) {
+function buildComboCard(combo) {
   const container = document.createElement('div');
   container.classList.add('card');
 
   const icon = document.createElement('div');
   icon.classList.add('icon');
   icon.classList.add(combo.category);
+
+  const stack = document.createElement('div');
+  stack.classList.add('stack');
 
   const label = document.createElement('p');
   label.classList.add('label');
@@ -70,9 +78,15 @@ function buildComboBox(combo) {
       code.append(key);
     });
 
+  const pips = document.createElement('p');
+  pips.classList.add('pips');
+
+  stack.append(label);
+  stack.append(code);
+  stack.append(pips);
+
   container.append(icon);
-  container.append(label);
-  container.append(code);
+  container.append(stack);
 
   return container;
 }
@@ -82,12 +96,13 @@ function cueCombo(combo) {
   const prevBox = document.querySelector('#current > :first-child');
 
   if (prevBox) {
+    prevBox.querySelector('.pips').remove();
     const prevItem = document.createElement('li');
     prevItem.append(prevBox);
     document.getElementById('log').prepend(prevItem);
   }
 
-  const nextBox = buildComboBox(combo);
+  const nextBox = buildComboCard(combo);
   document.getElementById('current').innerHTML = '';
   document.getElementById('current').append(nextBox);
 }
@@ -110,15 +125,28 @@ function handleComboKey(ev) {
     console.warn('handling combo key with bad state', { currentCombo, currentCodeIndex });
     return;
   }
+  if (ev.key === 'R') {
+    console.log('User reset trainer');
+    reset();
+    ev.preventDefault();
+    return;
+  } else if (ev.key === 'Space' || ev.key === 'Shift' || ev.key === 'Control') {
+    console.log('User reset combo entry');
+    currentCodeIndex = 0;
+    document.querySelector('#current .pips').innerText = '';
+    ev.preventDefault();
+    return;
+  }
   // map ev.key to direction
   if (!(ev.key in KEY_MAP)) {
-    console.log(`Ignoreing non-combo key (${ev.key})`);
+    console.log(`Ignoring non-combo key (${ev.key})`);
     return;
   }
   const key = KEY_MAP[ev.key];
   // check direction against current combo
   // show some feedback (log for now)
   if (currentCombo.code[currentCodeIndex] === key) {
+    document.querySelector('#current .pips').innerText = document.querySelector('#current .pips').innerText + '◾️';
     currentCodeIndex++;
     console.log(`GOOD KEY: ${key}`);
     if (currentCodeIndex === currentCombo.code.length) {
@@ -128,7 +156,9 @@ function handleComboKey(ev) {
   } else {
     console.log(`resetting after bad key: ${key}`);
     currentCodeIndex = 0;
+    document.querySelector('#current .pips').innerText = '';
   }
+  ev.preventDefault();
 }
 
 

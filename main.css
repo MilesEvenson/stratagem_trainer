@@ -1,24 +1,30 @@
 
 body {
   align-items: stretch;
-  background-color: lightskyblue;
+  background-color: black;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   margin: 0;
-  overflow: hidden;
+  /*overflow: hidden;*/
   padding: 0;
 }
 
 
 #trainer {
-  background-color: green;
+  background-color: white;
+}
+
+
+#current {
+  margin: 1rem;
+  width: 30rem;
 }
 
 
 #log {
   list-style: none;
-  width: 20rem;
+  width: 30rem;
 }
 
 
@@ -30,27 +36,38 @@ body {
 
 
 #trainer h1 {
-  color: default;
 }
 
 #trainer.listening h1 {
-  color: white;
+  text-decoration: underline;
 }
 
 
 .card {
   display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
-.card .code {
+
+.card .stack {
+  display: flex;
+  flex-direction: column;
   flex-basis: 80%;
-  flex-grow: 4;
+  gap: 0.2rem;
+  padding: 0.5rem;
+}
+
+.card .stack .label,
+.card .stack .code {
+  margin: 0;
+  padding: 0;
 }
 
 .card .icon {
   /* TODO - consistent width! */
-  flex-basis: 2rem;
-  height: 2rem;
+  flex-basis: 3rem;
+  height: 3rem;
 }
 
 .card .icon.eagle,
@@ -62,6 +79,7 @@ body {
   background-color: yellow;
 }
 
+.card .icon.backpack,
 .card .icon.weapon {
   background-color: blue;
 }
@@ -74,6 +92,7 @@ body {
 
 
 footer {
+  color: white;
   display: flex;
   flex-direction: row;
   justify-content: center;
