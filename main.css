@@ -1,0 +1,81 @@
+
+body {
+  align-items: stretch;
+  background-color: lightskyblue;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+
+#trainer {
+  background-color: green;
+}
+
+
+#log {
+  list-style: none;
+  width: 20rem;
+}
+
+
+#controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+
+#trainer h1 {
+  color: default;
+}
+
+#trainer.listening h1 {
+  color: white;
+}
+
+
+.card {
+  display: flex;
+}
+
+.card .code {
+  flex-basis: 80%;
+  flex-grow: 4;
+}
+
+.card .icon {
+  /* TODO - consistent width! */
+  flex-basis: 2rem;
+  height: 2rem;
+}
+
+.card .icon.eagle,
+.card .icon.orbital {
+  background-color: red;
+}
+
+.card .icon.ship {
+  background-color: yellow;
+}
+
+.card .icon.weapon {
+  background-color: blue;
+}
+
+.card .label {
+  flex-basis: 80%;
+}
+
+
+
+
+footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
