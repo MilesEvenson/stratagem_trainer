@@ -22,35 +22,11 @@ const KEY_MAP = {
 };
 
 
-const ALL_COMBOS = [
-  {
-    category: 'eagle',
-    code: 'urr',
-    label: 'Eagle Strafing Run',
-    slug: 'eagle-strafe',
-  },
-  {
-    category: 'orbital',
-    code: 'ruddr',
-    label: 'Orbital Railcannon Strike',
-    slug: 'orbital-railcannon',
-  },
-  {
-    category: 'ship',
-    code: 'udrlu',
-    label: 'Reinforce',
-    slug: 'reinforce',
-  },
-  {
-    category: 'weapon',
-    code: 'ddlur',
-    label: 'Expendable Anti-Tank',
-    slug: 'weapon-eat',
-  },
-];
 
-
-let selectedCombos = ALL_COMBOS.slice(0);
+if (!ALL_COMBOS) {
+  console.error('Combo list failed to load');
+}
+let selectedCombos = (ALL_COMBOS).slice(0);
 let currentCombo = null;
 let currentCodeIndex = -1;
 
