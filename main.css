@@ -1,13 +1,14 @@
 
 body {
   align-items: stretch;
-  background-color: black;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  height: 100vh;
+  justify-content: space-between;
   margin: 0;
-  /*overflow: hidden;*/
   padding: 0;
+  width: 100%;
 }
 
 
@@ -33,7 +34,9 @@ body {
 
 #current .card {
   background-color: white;
+  border-radius: 1rem;
   color: black;
+  padding: 1rem;
   transition-duration: 300ms;
   transition-property: background-color;
 }
@@ -135,15 +138,15 @@ body {
 }
 
 .card .icon.orbital {
-  background-color: #b700ff;
+  background-color: purple;
 }
 
 .card .icon.ship {
-  background-color: yellow;
+  background-color: gold;
 }
 
 .card .icon.backpack {
-  background-color: blue;
+  background-color: darkblue;
 }
 
 .card .icon.weapon {
@@ -158,9 +161,10 @@ body {
 
 
 footer {
-  color: white;
+  border-top: 2px solid black;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  padding: 1rem 0;
 }
 
