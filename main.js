@@ -57,6 +57,12 @@ function reset() {
 
   currentCombo = null;
   currentCodeIndex = -1;
+
+  selectedCombos = {
+    'ship-reinforce': ALL_COMBOS.find(c => c.slug === 'ship-reinforce'),
+    'ship-resupply': ALL_COMBOS.find(c => c.slug === 'ship-resupply'),
+  };
+
   stopListenCombo();
 }
 
@@ -227,7 +233,6 @@ function drawLoadout() {
 
     loadoutItem.addEventListener('click', (ev) => {
       toggleComboInLoadout(combo);
-      ev.preventDefault();
     });
 
     loadoutList.append(loadoutItem);

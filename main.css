@@ -58,12 +58,17 @@ body {
 }
 
 #loadout li {
+  border-radius: 1rem;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   gap: 0.5rem;
   justify-content: flex-start;
+  padding: 0.25rem 1rem;
+}
+#loadout li:hover {
+  background-color: #ddd;
 }
 
 #loadout li .wrapper {
@@ -76,6 +81,7 @@ body {
 
 #loadout li input[type="checkbox"] {
   align-self: flex-start;
+  cursor: pointer;
   height: 1.5rem;
   width: 1.5rem;
 }
